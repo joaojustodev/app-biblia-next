@@ -1,150 +1,109 @@
-import { Heart, Share } from "phosphor-react";
+import { ArrowSquareRight } from "phosphor-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { fetchBiblePending } from "../store/bible";
+import { Book, Version } from "../store/bible/types";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import Lecture from "./Lecture";
 
-const Bible = () => {
+interface FormValues {
+  version: string;
+  book: string;
+  chapter: string;
+}
+
+interface BibleProps {
+  books: Book[];
+  versions: Version[];
+}
+
+const Bible = ({ books, versions }: BibleProps) => {
+  const { register, handleSubmit } = useForm<FormValues>();
+  const [bookSelected, setBookSelected] = useState("gn");
+  const dispatch = useAppDispatch();
+  const { url } = useAppSelector((state) => state.bible);
+
+  const chapterOptions: JSX.Element[] = [];
+
+  const [book] = books.filter((b) => b.abbrev.pt === bookSelected);
+
+  if (book) {
+    for (let i = 0; i < Number(book.chapters); i++) {
+      chapterOptions.push(
+        <option key={i} value={i + 1}>
+          {i + 1}
+        </option>
+      );
+    }
+  }
+
+  function onSubmit({ book, chapter, version }: FormValues) {
+    const url = `/verses/${version}/${book}/${chapter}`;
+    dispatch(fetchBiblePending(url));
+  }
+
   return (
     <section className="bg-blue-700  shadow-md h-[76px] xs:h-full xs:py-2">
       <div className="w-full h-full flex items-center justify-center">
-        <form className="w-full flex items-center justify-around xs:flex-col xs:gap-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex items-center justify-around xs:flex-col xs:gap-4"
+        >
           <select
-            className="w-[60px] rounded cursor-pointer"
-            name="version"
+            className="w-[60px] rounded cursor-pointer xs:w-full"
             id="version"
+            {...register("version", { required: true })}
           >
-            <option className="cursor-pointer" value="nvi">
-              NVI
-            </option>
+            {versions &&
+              versions.map((v) => {
+                return (
+                  <option
+                    key={v.version}
+                    className="cursor-pointer"
+                    value={v.version}
+                  >
+                    {v.version.toUpperCase()}
+                  </option>
+                );
+              })}
           </select>
           <select
-            className="w-[120px] rounded cursor-pointer"
-            name="book"
+            className="w-[120px] rounded cursor-pointer xs:w-full"
             id="book"
+            {...register("book", { required: true })}
+            defaultValue=""
+            onChange={(e) => setBookSelected(e.target.value)}
           >
-            <option className="cursor-pointer" value="gn">
-              Gênesis
-            </option>
+            {books.map((b) => {
+              return (
+                <option
+                  key={b.abbrev.pt}
+                  className="cursor-pointer"
+                  value={b.abbrev.pt}
+                >
+                  {b.name}
+                </option>
+              );
+            })}
           </select>
           <select
-            className="w-[60px] rounded cursor-pointer"
-            name="chapter"
+            className="w-[60px] rounded cursor-pointer xs:w-full"
             id="chapter"
+            {...register("chapter", { required: true })}
           >
-            <option className="cursor-pointer" value="1">
-              1
-            </option>
+            {chapterOptions}
           </select>
+          <button
+            type="submit"
+            className="text-sm   bg-pink-500 rounded px-1 flex items-center justify-center gap-2 xs:w-full xs:justify-between"
+          >
+            <span className="hidden md:block xs:block">Buscar</span>
+            <ArrowSquareRight size={24} />
+          </button>
         </form>
       </div>
 
-      <div className="mt-6 bg-white shadow-md border-t border-b border-t-blue-300 border-b-blue-300 lg:border lg:border-blue-300">
-        <div>
-          <div className="my-6">
-            <h1 className="text-3xl font-bold font-quick">Gênesis 1</h1>
-          </div>
-          <div className="w-full flex flex-col gap-6 p-1">
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                <sup className="mx-1">1</sup>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-            <div className="rounded shadow-sm">
-              <p className="text-md font-semibold font-quick leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In
-                voluptatum repudiandae nostrum voluptatem impedit nam
-              </p>
-              <div className="w-full flex gap-2 items-center justify-end px-2">
-                <Heart size={24} />
-                <Share size={24} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {url && <Lecture />}
     </section>
   );
 };

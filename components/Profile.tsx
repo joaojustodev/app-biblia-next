@@ -5,10 +5,10 @@ import { Google } from "./Icons";
 
 const Profile = () => {
   // NOTE: Verificar se existe alguma seção, caso existe preencha os campos com as info do usuário, caso não exista, peça ao usuário que faça o login.
-  const session = true;
+  const session = false;
 
   return (
-    <article className="bg-white border border-b-blue-300 shadow-md w-full lg:fixed lg:max-w-[300px]">
+    <article className="bg-white border border-b-blue-300 shadow-md w-full lg:fixed lg:max-w-[300px] lg:p-4">
       {session ? (
         <>
           <div className="flex items-center justify-center flex-col relative">

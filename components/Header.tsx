@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 import { Book, Books, House, BookOpen, MagnifyingGlass } from "phosphor-react";
 import { useRouter } from "next/router";
@@ -22,7 +21,7 @@ const menuList = [
   },
 ];
 
-const Header: React.FC = () => {
+const Header = () => {
   const { pathname } = useRouter();
 
   return (

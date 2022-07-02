@@ -1,11 +1,17 @@
-import type { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Header from "../components/Header";
 import Profile from "../components/Profile";
 import Bible from "../components/Bible";
+import { Book, Version } from "../store/bible/types";
+import api from "../lib/api";
 
-const Home: NextPage = () => {
+interface HomeProps {
+  books: Book[];
+  versions: Version[];
+}
+
+const Home: NextPage<HomeProps> = ({ books, versions }) => {
   return (
     <>
       <Head>
@@ -14,12 +20,29 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <main className="relative w-full max-w-container mx-auto mt-[70px] lg:grid lg:grid-cols-[300px_1fr] lg:gap-6">
-        <div></div>
+        <div className="hidden lg:block"></div>
         <Profile />
-        <Bible />
+        <Bible versions={versions} books={books} />
       </main>
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { data: versions } = await api.get(
+    "https://www.abibliadigital.com.br/api/versions"
+  );
+
+  const { data: books } = await api.get(
+    "https://www.abibliadigital.com.br/api/books"
+  );
+
+  return {
+    props: {
+      versions,
+      books,
+    },
+  };
 };
 
 export default Home;
