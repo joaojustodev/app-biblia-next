@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { fetchBible } from "../store/bible";
 import { Book, Version } from "../store/bible/types";
 import { useAppDispatch, useAppSelector } from "../store/hook";
+import VersesSkeleton from "./Shimmer/VersesSkeleton";
 import Verses from "./Verses";
 
 interface FormValues {
@@ -45,7 +46,7 @@ const Bible = ({ books, versions }: BibleProps) => {
   }
 
   return (
-    <section className="bg-blue-700 dark:bg-gray-700 rounded shadow-md h-[76px] xs:h-full xs:py-2">
+    <section className="bg-blue-700 dark:bg-gray-700 rounded shadow-md h-[100px] xs:h-full xs:py-2">
       <div className="w-full h-full flex items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -105,7 +106,7 @@ const Bible = ({ books, versions }: BibleProps) => {
         </form>
       </div>
       {success && data && <Verses />}
-      {loading && <h1>Carregando...</h1>}
+      {loading && <VersesSkeleton />}
     </section>
   );
 };
