@@ -8,7 +8,7 @@ const Profile = () => {
   const session = false;
 
   return (
-    <article className="bg-white border border-b-blue-300 shadow-md w-full lg:fixed lg:max-w-[300px] lg:p-4">
+    <article className="bg-white dark:bg-gray-700 rounded shadow-md w-full lg:fixed lg:max-w-[300px] lg:p-4">
       {session ? (
         <>
           <div className="flex items-center justify-center flex-col relative">
@@ -52,11 +52,13 @@ const Profile = () => {
           </Tabs.Root>
         </>
       ) : (
-        <div className="py-2">
+        <div className="py-2 border-none">
           <div className="flex-1 flex flex-col justify-center gap-4">
             <div className="m-auto flex flex-col gap-1">
-              <strong className="text-3xl">Faça login na plataforma</strong>
-              <span className="block text-sm">
+              <strong className="text-3xl dark:text-gray-100">
+                Faça login na plataforma
+              </strong>
+              <span className="block text-sm dark:text-gray-100">
                 Salve seus versículos favoritos e compartilhe
               </span>
             </div>

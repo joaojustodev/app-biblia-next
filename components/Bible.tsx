@@ -1,10 +1,10 @@
 import { ArrowSquareRight } from "phosphor-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { fetchBiblePending } from "../store/bible";
+import { fetchBible } from "../store/bible";
 import { Book, Version } from "../store/bible/types";
 import { useAppDispatch, useAppSelector } from "../store/hook";
-import Lecture from "./Lecture";
+import Verses from "./Verses";
 
 interface FormValues {
   version: string;
@@ -21,7 +21,7 @@ const Bible = ({ books, versions }: BibleProps) => {
   const { register, handleSubmit } = useForm<FormValues>();
   const [bookSelected, setBookSelected] = useState("gn");
   const dispatch = useAppDispatch();
-  const { url } = useAppSelector((state) => state.bible);
+  const { success, data, loading } = useAppSelector((state) => state.bible);
 
   const chapterOptions: JSX.Element[] = [];
 
@@ -38,12 +38,14 @@ const Bible = ({ books, versions }: BibleProps) => {
   }
 
   function onSubmit({ book, chapter, version }: FormValues) {
+    if (!book || !chapter || !version) return;
+
     const url = `/verses/${version}/${book}/${chapter}`;
-    dispatch(fetchBiblePending(url));
+    dispatch(fetchBible(url));
   }
 
   return (
-    <section className="bg-blue-700  shadow-md h-[76px] xs:h-full xs:py-2">
+    <section className="bg-blue-700 dark:bg-gray-700 rounded shadow-md h-[76px] xs:h-full xs:py-2">
       <div className="w-full h-full flex items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -95,15 +97,15 @@ const Bible = ({ books, versions }: BibleProps) => {
           </select>
           <button
             type="submit"
-            className="text-sm   bg-pink-500 rounded px-1 flex items-center justify-center gap-2 xs:w-full xs:justify-between"
+            className="text-sm text-gray-900 font-bold bg-pink-500 rounded p-1 flex items-center justify-center gap-2  xs:w-full xs:justify-between opacity-90 transition-opacity hover:opacity-100"
           >
             <span className="hidden md:block xs:block">Buscar</span>
             <ArrowSquareRight size={24} />
           </button>
         </form>
       </div>
-
-      {url && <Lecture />}
+      {success && data && <Verses />}
+      {loading && <h1>Carregando...</h1>}
     </section>
   );
 };

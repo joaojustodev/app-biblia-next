@@ -25,12 +25,12 @@ const Header = () => {
   const { pathname } = useRouter();
 
   return (
-    <header className="fixed top-0 right-0 z-50 w-full h-[56px] bg-blue-700 shadow-md">
+    <header className="fixed top-0 right-0 z-50 w-full h-[56px] bg-blue-700 dark:bg-gray-700 shadow-md">
       <nav className="w-full h-full max-w-container m-auto flex items-center justify-between">
         <div className="flex items-center justify-center gap-2 w-[]">
           <Link href="/">
             <a>
-              <Book size={32} className="text-pink-500" />
+              <Book size={32} className="text-pink-500 dark:font-bold" />
             </a>
           </Link>
           <div className="md:flex">
@@ -51,7 +51,7 @@ const Header = () => {
             <MagnifyingGlass size={22} className="text-pink-500 md:hidden" />
           </div>
         </div>
-        <ul className="flex items-center">
+        <ul className="flex items-center dark:font-bold">
           {menuList.map((item) => {
             return (
               <li
