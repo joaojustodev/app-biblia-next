@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-100 font-roboto;
+  @apply bg-gray-100 font-roboto antialiased;
+  @apply dark:bg-gray-900;
   position: relative;
 }

@@ -3,6 +3,7 @@ let plugin = require("tailwindcss/plugin");
 
 module.exports = {
   content: ["./**/*.{ts,tsx}"],
+  darkMode: ["class"],
   theme: {
     extend: {
       screens: {
@@ -35,11 +36,19 @@ module.exports = {
         },
         white: "#F7F6F1",
       },
+      backgroundColor: {
+        verses: {
+          fill: "var(--color-fill)",
+        },
+      },
+      textColor: {
+        base: "var(--text-base)",
+      },
+
       fontFamily: {
         roboto: "Roboto, sans-serif",
         quick: "Quicksand, sans-serif",
       },
-
       maxWidth: {
         container: "1128px",
       },
