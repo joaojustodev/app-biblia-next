@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { bibleReducer } from "./bible";
+import { acessibilityReducer } from "./acessibility";
 // ...
 
 export const store = configureStore({
   reducer: {
     bible: bibleReducer,
+    acessibility: acessibilityReducer,
   },
 });
 

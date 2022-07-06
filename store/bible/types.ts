@@ -27,7 +27,7 @@ export type Version = {
 };
 
 export interface getAllChapterResponse {
-  book: Book[];
-  chapter: Chapter[];
+  book: Book;
+  chapter: Chapter;
   verses: Verses[];
 }
